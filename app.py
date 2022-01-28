@@ -1,11 +1,11 @@
 import dash
 import dash_cytoscape as cyto
 from dash import html
-import cylo_formatter as hilmi
+import cylo_formatter as cylo
 
 my_dataset = "test.mtx"
 
-GRAPH = hilmi.create_elements(dataset=my_dataset)
+GRAPH = cylo.create_elements(dataset=my_dataset)
 
 app = dash.Dash(__name__)
 
