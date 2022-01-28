@@ -1,7 +1,7 @@
 '''
 this script takes the raw data from the dataset and formats its fron dash cytoscape element:
 the final data format should look like this :
-elements=[
+elements = [
             #---------------------nodes aka vertecies--------------------
             {'data': {'id': 'one', 'label': 'Node 1'}, },
             {'data': {'id': 'two', 'label': 'Node 2'}, },
