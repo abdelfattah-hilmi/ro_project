@@ -119,6 +119,17 @@ app.layout = html.Div([
                         n_clicks = 0,
                         children = "grid",
                         ),
+
+                    html.Br(),
+                    html.Br(),
+
+                    html.Button(
+                        id='concentric',
+                        className = "button",
+                        value = "euler",
+                        n_clicks = 0,
+                        children = "concentric",
+                        ),
                 ]
                 ),
             html.Div(
@@ -147,13 +158,14 @@ app.layout = html.Div([
     Input('random', 'n_clicks'),
     Input('circle', 'n_clicks'),
     Input('cose', 'n_clicks'),
-    Input('grid', 'n_clicks')
+    Input('grid', 'n_clicks'),
+    Input('concentric', 'n_clicks')
     )
-def update_layout(random,circle,cose,grid):
+def update_layout(random,circle,cose,grid,concentric):
     changed_id = callback_context.triggered[0]
 
     layout = changed_id['prop_id'].split('.')[0]
-    
+    print(layout)
     if layout:
         return {
         'name': layout,
