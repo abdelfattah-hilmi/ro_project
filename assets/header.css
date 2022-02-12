@@ -66,3 +66,13 @@
     color: white;
   }
 
+.reco{
+    padding: 50px;
+    background-color: #d5f9ff;
+    border-radius: 15px;
+    margin-left: 3%;
+    border: solid rgb(24, 43, 105) 2px;
+    box-shadow: 20px,20px, black;
+    height: 300px;
+    width: 50%;
+}

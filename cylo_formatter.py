@@ -53,5 +53,24 @@ def create_elements(dataset:str) -> list:
             }for i,j in data
     ]
 
-    return nodes+edges
+    return {'sources':source_nodes,'destinations':destination_nodes,'graph':nodes+edges}
 
+
+
+if __name__ == "__main__":
+
+    data = get_data_from( "test.mtx" )
+
+    data = [ (s[:-1]).split() for s in data ]
+    
+    source_nodes, destination_nodes = zip( *data )
+    nodes= source_nodes+destination_nodes
+
+    def get_similar(item:str):
+        if item in destination_nodes:
+            indices = [i for i, x in enumerate(destination_nodes) if x == '1' ]
+            similar_products = [source_nodes[i] for i in indices]
+            return {'similar-items':similar_products,'number-of-similars':len(similar_products)}
+    print(get_similar('1'))
+
+     
