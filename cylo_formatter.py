@@ -18,6 +18,9 @@ elements = [
 '''
 
 
+from venv import create
+
+
 def get_data_from(filepath:str) -> list :
     '''
     get dataset raw lines 
@@ -29,15 +32,18 @@ def get_data_from(filepath:str) -> list :
 
 
 def create_elements(dataset:str) -> list:
-    data = get_data_from( dataset )
-    data = [ (s[:-1]).split() for s in data ]
 
+    data = get_data_from( dataset )
+
+    data = [ (s[:-1]).split() for s in data ]
+    
+    
     # unzip the data list i.e: if data = [(a,b),(c,s)] then source = (a,c) and dest = (b,d)
     source_nodes, destination_nodes = zip( *data ) 
 
     nodes = [
         {
-            'data':{'id':f'{i}','label': f'prod {i}' } 
+            'data':{'id':f'{i}','label': f'p {i}' } 
             }for i in source_nodes + destination_nodes
     ]
 
@@ -48,3 +54,4 @@ def create_elements(dataset:str) -> list:
     ]
 
     return nodes+edges
+
