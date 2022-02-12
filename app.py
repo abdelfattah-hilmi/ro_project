@@ -1,37 +1,170 @@
 import dash
+from dash import html,callback_context
+from dash.dependencies import Input, Output
 import dash_cytoscape as cyto
-from dash import html
 import cylo_formatter as cylo
-
 my_dataset = "test.mtx"
 
+# generating the Network data --------------------------------------------------------------------------------
+
 GRAPH = cylo.create_elements(dataset=my_dataset)
+
+# ------------------------------------------------------------------------------------------------------------
+
+
+
 
 app = dash.Dash(__name__)
 
 app.layout = html.Div([
-    cyto.Cytoscape(
-        id='cytoscape-two-nodes',
-        layout={'name': 'circle'},
-        style={'width': '100%', 'height': '600px','background': 'linear-gradient(90deg, rgba(241,188,162,1) 0%, rgba(244,255,128,0.8379945728291316) 46%, rgba(255,89,193,0.7539609593837535) 100%)'},
-        elements=GRAPH
-        
-        # elements=[
-        #     #---------------------nodes aka vertecies--------------------
-        #     {'data': {'id': 'one', 'label': 'Node 1'}, },
-        #     {'data': {'id': 'two', 'label': 'Node 2'}, },
-        #     {'data': {'id': 'three', 'label': 'Node 3'}, },
-        #     {'data': {'id': 'four', 'label': 'Node 4'}, },
-
-        #     #---------------------edges aka edges hhh--------------------
-        #     {'data': {'source': 'one', 'target': 'two'}},
-        #     {'data': {'source': 'one', 'target': 'three'}},
-        #     {'data': {'source': 'two', 'target': 'three'}},
-        #     {'data': {'source': 'three', 'target': 'four'}},
+    html.Header(
+        className = "head marg",
+        children = [
             
-        # ]
+            html.H3(
+                className = "marg" ,
+                children = [
+                    "Amazon Recommender",
+                    html.A(
+                        className = "link",
+                        href = "https://snap.stanford.edu/data/com-Amazon.html",
+                        children = ["Data set link"]
+                    )
+                    ]
+                )
+            
+            ]
+    ) ,
+    html.Div(
+        className = "center",
+        children = [
+            html.H4(
+                "Recommendation system built using Amazon product co-purshasing network dataset"
+            ),
+            html.H6(
+                className="right",
+                children = [
+                    "Made by: Hilmi abdelfattah, Berkani Mohamed ...",
+                ]
+                )
+            ]
+        ),
+        
+        html.Br(),
+
+    # Network div --------------------------------------------------------------------------------------------------------------------------------------
+    html.Div(
+        className="flex-container",
+        children = [
+            html.Div(
+                id = "network",
+                className = "network",
+                style = {'display':'flex','box-shadow':' 20px,20px, black'},
+                children = [
+
+                    cyto.Cytoscape(
+                        id = 'cytoscape',
+                        style={'width': '100%', 'height': '400px'},
+                        layout = { 'name': 'random' }, #TODO ''cose'' splits the graph into communities
+                        elements = GRAPH
+                    )
+                ]),
+
+            html.Div(
+                className = "buttons",
+                children = [
+                    html.P("Change layout"),
+                    
+                    
+                    html.Br(),
+                    html.Br(),
+                    
+                    html.Button(
+                        id='random',
+                        className = "button",
+                        value = "random",
+                        n_clicks = 0,
+                        children = "Random",
+                        ),
+                    
+                    html.Br(),
+                    html.Br(),
+
+                    html.Button(
+                        id='circle',
+                        className = "button",
+                        value = "circle",
+                        n_clicks = 0,
+                        children = "Circle",
+                        ),
+
+                    html.Br(),
+                    html.Br(),
+
+                    html.Button(
+                        id='cose',
+                        className = "button",
+                        value = "cose",
+                        n_clicks = 0,
+                        children = "Communities",
+                        ),
+
+                    html.Br(),
+                    html.Br(),
+
+                    html.Button(
+                        id='grid',
+                        className = "button",
+                        value = "grid",
+                        n_clicks = 0,
+                        children = "grid",
+                        ),
+                ]
+                ),
+            html.Div(
+                className = "data-info1",
+                children = ["hello","hello","hello"]
+                )
+        ]),
+        html.Br(), 
+        html.Br(), 
+    html.Div(
+        className="flex-container",
+        children = [
+            
+            html.Div(
+                className = "data-info1",
+                children = ["hello"]
+                ),
+            html.Div(
+                className = "data-info1",
+                children = ["hello"]
+                )
+        ])
+    ])
+
+@app.callback(Output('cytoscape', 'layout'),
+    Input('random', 'n_clicks'),
+    Input('circle', 'n_clicks'),
+    Input('cose', 'n_clicks'),
+    Input('grid', 'n_clicks')
     )
-])
+def update_layout(random,circle,cose,grid):
+    changed_id = callback_context.triggered[0]
+
+    layout = changed_id['prop_id'].split('.')[0]
+    
+    if layout:
+        return {
+        'name': layout,
+        'animate': True
+    }
+
+    
+    
+    
+
+
 
 if __name__ == '__main__':
     app.run_server(debug=True)

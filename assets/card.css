@@ -1,0 +1,9 @@
+.network{
+    background-color: #C3E0E5;
+    border-radius: 15px;
+    margin-left: 3%;
+    border: solid rgb(24, 43, 105) 2px;
+    box-shadow: 20px,20px, black;
+    height: 400px;
+    width: 50%;
+}

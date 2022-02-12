@@ -1,0 +1,16 @@
+*{
+    box-sizing: border-box;
+}
+body {
+    font-family: sans-serif;
+    background-color: #D4F1F4;
+    margin: 0;
+}
+
+.marg{
+    margin: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: #FFFFFF;
+}
