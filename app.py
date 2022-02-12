@@ -7,8 +7,21 @@ my_dataset = "test.mtx"
 
 # generating the Network data --------------------------------------------------------------------------------
 
-GRAPH = cylo.create_elements(dataset=my_dataset)
+elements = cylo.create_elements(dataset=my_dataset)
+GRAPH = elements['graph']
 
+source_nodes = elements['sources']
+destination_nodes = elements['destinations']
+
+def get_similar(item:str):
+        if item in destination_nodes:
+            indices = [i for i, x in enumerate(destination_nodes) if x == 'item' ]
+            similar_products = [source_nodes[i] for i in indices]
+            return {'similar-items':similar_products,'number-of-similars':len(similar_products)}
+        else :
+            indices = [i for i, x in enumerate(source_nodes) if x == 'item' ]
+            similar_products = [destination_nodes[i] for i in indices]
+            return {'similar-items':similar_products,'number-of-similars':len(similar_products)}
 # ------------------------------------------------------------------------------------------------------------
 
 
@@ -134,7 +147,7 @@ app.layout = html.Div([
                 ),
             html.Div(
                 className = "data-info1",
-                children = ["hello","hello","hello"]
+                children = ["hello"," hello ","hello"]
                 )
         ]),
         html.Br(), 
@@ -144,8 +157,11 @@ app.layout = html.Div([
         children = [
             
             html.Div(
-                className = "data-info1",
-                children = ["hello"]
+                id='graph-info',
+                className = "reco",
+                children = [
+                    html.H5("hello"),
+                    ]
                 ),
             html.Div(
                 className = "data-info1",
@@ -153,6 +169,10 @@ app.layout = html.Div([
                 )
         ])
     ])
+
+
+
+
 
 @app.callback(Output('cytoscape', 'layout'),
     Input('random', 'n_clicks'),
@@ -165,15 +185,39 @@ def update_layout(random,circle,cose,grid,concentric):
     changed_id = callback_context.triggered[0]
 
     layout = changed_id['prop_id'].split('.')[0]
-    print(layout)
+    # print(layout)
     if layout:
         return {
         'name': layout,
         'animate': True
     }
 
-    
-    
+@app.callback(
+    Output('graph-info', 'children'),
+    Input('cytoscape', 'tapNodeData'),
+    )
+def displayTapNodeData(data):
+    if data:
+        item = data['id']
+        if item in destination_nodes:
+            indices = [i for i, x in enumerate(destination_nodes) if x == item ]
+            similar_products = [source_nodes[i] for i in indices]
+        else :
+            indices = [i for i, x in enumerate(source_nodes) if x == item ]
+            similar_products = [destination_nodes[i] for i in indices]
+            
+        
+        
+        
+        return html.P(
+            children=[
+                f"Product Id: {data['id']}",
+                f"{similar_products}"
+                ]
+            )
+    else :
+        return " Select a product so we can recommend something similar "
+
     
 
 
@@ -207,52 +251,3 @@ if __name__ == '__main__':
 
 
 
-
-
-
-
-
-
-
-# dash starting template
-
-
-# Run this app with `python app.py` and
-# visit http://127.0.0.1:8050/ in your web browser.
-
-# import dash
-# from dash import dcc
-# from dash import html
-# import plotly.express as px
-# import pandas as pd
-
-# app = dash.Dash(__name__)
-
-# # assume you have a "long-form" data frame
-# # see https://plotly.com/python/px-arguments/ for more options
-# df = pd.DataFrame({
-#     "Fruit": ["Apples", "Oranges", "Bananas", "Apples", "Oranges", "Bananas"],
-#     "Amount": [4, 1, 2, 2, 4, 5],
-#     "City": ["SF", "SF", "SF", "Montreal", "Montreal", "Montreal"]
-# })
-
-# fig = px.bar(df, x="Fruit", y="Amount", color="City", barmode="group")
-
-# app.layout = html.Div(
-#     children = 
-#     [
-
-#     html.H1(children='Hello Dash'),
-
-#     html.Div(children='''
-#         Dash: A web application framework for your data.
-#     '''),
-
-#     dcc.Graph(
-#         id='example-graph',
-#         figure=fig
-#     )
-# ])
-
-# if __name__ == '__main__':
-#     app.run_server(debug=True)
