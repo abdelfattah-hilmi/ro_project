@@ -1,5 +1,5 @@
 import dash
-from dash import html,callback_context
+from dash import html,callback_context,dcc
 from dash.dependencies import Input, Output
 import dash_cytoscape as cyto
 import cylo_formatter as cylo
@@ -22,6 +22,10 @@ def get_similar(item:str):
             indices = [i for i, x in enumerate(source_nodes) if x == 'item' ]
             similar_products = [destination_nodes[i] for i in indices]
             return {'similar-items':similar_products,'number-of-similars':len(similar_products)}
+
+
+# --------------------------------------------------------------------------------------------------------------------
+
 # ------------------------------------------------------------------------------------------------------------
 
 
@@ -57,7 +61,7 @@ app.layout = html.Div([
             html.H6(
                 className="right",
                 children = [
-                    "Made by: Hilmi abdelfattah, Berkani Mohamed ...",
+                    "Made by: HILMI abdelfattah, BEKANI Mohamed ,TANJI Assia, LAABOUDI Amine"
                 ]
                 )
             ]
@@ -147,28 +151,37 @@ app.layout = html.Div([
                 ),
             html.Div(
                 className = "data-info1",
-                children = ["hello"," hello ","hello"]
+                children = [
+                    
+
+                    html.Img(src="assets/dist.png",className = "data-info1",)
+                ]
                 )
         ]),
         html.Br(), 
         html.Br(), 
     html.Div(
-        className="flex-container",
+        className = "mid",
         children = [
-            
-            html.Div(
-                id='graph-info',
-                className = "reco",
-                children = [
-                    html.H5("hello"),
-                    ]
-                ),
-            html.Div(
-                className = "data-info1",
-                children = ["hello"]
-                )
-        ])
+        html.Div(
+            className="flex-container ",
+            style = {'text-align':'center'} ,
+            children = [
+                
+                html.Div(
+                    id='graph-info',
+                    className = "reco",
+                    children = [
+                        html.H5("hello"),
+                        ]
+                    ),
+                
+            ]),
+            ]
+        )
     ])
+    
+    
 
 
 
@@ -212,6 +225,11 @@ def displayTapNodeData(data):
         return html.P(
             children=[
                 f"Product Id: {data['id']}",
+                html.Br(),
+                f"Number of similar products: {len(similar_products)}",
+                html.Br(),
+                "List of similar products: ",
+                html.Br(),
                 f"{similar_products}"
                 ]
             )

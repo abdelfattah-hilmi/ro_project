@@ -38,6 +38,7 @@
 .data-info1{
     margin-left: 10px;
     background-color: rgb(65, 44, 114);
+    height: 405px;
 }
 
 .buttons{
@@ -75,4 +76,8 @@
     box-shadow: 20px,20px, black;
     height: 300px;
     width: 50%;
+}
+
+.mid{
+    margin-left:27%;
 }
